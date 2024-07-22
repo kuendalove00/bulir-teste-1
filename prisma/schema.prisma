@@ -9,6 +9,51 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
+}
+
+
+enum Tipo {
+  CLIENTE
+  PRESTADOR
+}
+
+model Usuario {
+  id Int @id @default(autoincrement())
+  nome_completo String
+  nif String @unique
+  email String @unique
+  senha String
+  tipo Tipo
+  saldo Float
+
+  servico Servico[]
+
+  transacao Transacao[]
+}
+
+model Servico {
+  id Int @id @default(autoincrement())
+  titulo String
+  descricao String
+  preco Float
+
+  prestadorId Int?
+  prestador Usuario? @relation(fields: [prestadorId], references: [id]) 
+
+  transacao Transacao[]
+}
+
+model Transacao {
+  id Int @id @default(autoincrement())
+  data DateTime
+  quantia Float
+
+  usuarioId Int?
+  usuario Usuario? @relation(fields: [usuarioId], references: [id])
+
+  servicoId Int?
+  servico Servico? @relation(fields: [servicoId], references: [id])
+
 }
