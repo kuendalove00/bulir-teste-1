@@ -1,1 +1,4 @@
-export class CreateTransacaoDto {}
+export class CreateTransacaoDto {
+  usuarioId: number;
+  servicoId: number;
+}
