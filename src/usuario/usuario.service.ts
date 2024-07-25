@@ -3,6 +3,7 @@ import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
+import { response } from 'express';
 
 @Injectable()
 export class UsuarioService {
@@ -31,7 +32,7 @@ export class UsuarioService {
     });
 
     if (!usuario) {
-      throw new NotFoundException(`O usuario com o  ${id} não encontrado`);
+      throw new NotFoundException(`O usuario com o id = ${id} não encontrado`);
     }
 
     return usuario;
@@ -45,10 +46,12 @@ export class UsuarioService {
     });
 
     if (!usuario) {
-      throw new NotFoundException(`O usuario com o  ${email} não encontrado`);
+      throw new NotFoundException(
+        `O usuario com o email = ${email} não encontrado`,
+      );
     }
 
-    return usuario
+    return usuario;
   }
 
   async consultarPorNif(nif: string) {
@@ -59,11 +62,13 @@ export class UsuarioService {
     });
 
     if (!usuario) {
-      throw new NotFoundException(`O usuario com o  ${nif} não encontrado`);
+      throw new NotFoundException(
+        `O usuario com o nif = ${nif} não encontrado`,
+      );
     }
 
     const { senha, ...resultado } = usuario;
-    return resultado
+    return resultado;
   }
 
   async atualizarDados(id: number, updateUsuarioDto: UpdateUsuarioDto) {
@@ -75,7 +80,7 @@ export class UsuarioService {
     });
 
     const { senha, ...resultado } = usuario;
-    return resultado
+    return resultado;
   }
 
   async atualizarSaldo(id: number, saldo: number) {
@@ -84,12 +89,12 @@ export class UsuarioService {
         id: id,
       },
       data: {
-        saldo: saldo
+        saldo: saldo,
       },
     });
 
     const { senha, ...resultado } = usuario;
-    return resultado
+    return resultado;
   }
 
   async excluir(id: number) {
@@ -100,9 +105,11 @@ export class UsuarioService {
     });
 
     if (!usuario) {
-      throw new NotFoundException(`O usuario com o  ${id} não encontrado`);
+      throw new NotFoundException(`O usuario com o id = ${id} não encontrado`);
     }
 
-    return usuario;
+    return response.status(200).json({
+      message: 'Usuario excluido com sucesso',
+    });
   }
 }

@@ -47,7 +47,16 @@ export class TransacaoService {
   }
 
   async listar() {
-    const transacoes = await this.prisma.transacao.findMany();
+    const transacoes = await this.prisma.transacao.findMany({
+      include: {
+        servico: {
+          include: {
+            prestador: true
+          }
+        },
+        usuario: true,
+      },
+    });
     return transacoes;
   }
 
@@ -55,6 +64,14 @@ export class TransacaoService {
     const transacao = await this.prisma.transacao.findUnique({
       where: {
         id: id,
+      },
+      include: {
+        servico: {
+          include: {
+            prestador: true
+          }
+        },
+        usuario: true,
       },
     });
 
@@ -65,6 +82,14 @@ export class TransacaoService {
     const transacao = await this.prisma.transacao.findMany({
       where: {
         data: data,
+      },
+      include: {
+        servico: {
+          include: {
+            prestador: true
+          }
+        },
+        usuario: true,
       },
     });
 

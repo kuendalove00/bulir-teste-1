@@ -13,8 +13,12 @@ import {
 import { ServicoService } from './servico.service';
 import { CreateServicoDto } from './dto/create-servico.dto';
 import { UpdateServicoDto } from './dto/update-servico.dto';
+import { PapeisGuard } from 'src/guards/papeis.guard';
+import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
+
 
 @Controller('servico')
+
 export class ServicoController {
   constructor(
     private readonly servicoService: ServicoService,
